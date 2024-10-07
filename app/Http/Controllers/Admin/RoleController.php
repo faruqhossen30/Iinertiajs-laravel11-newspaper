@@ -18,7 +18,7 @@ class RoleController extends Controller
     {
         $roles = Role::latest()->paginate(10);
         // return  $roles;
-        return Inertia::render('Admin/Role/Index',['roles' => $roles]);
+        return Inertia::render('Admin/Role/Index', ['roles' => $roles]);
     }
 
     /**
@@ -30,7 +30,7 @@ class RoleController extends Controller
         // return $roles;
         $permissions = Permission::all();
         // return $permissions;
-        return Inertia::render('Admin/Role/Create',['roles' => $roles,'permissions' => $permissions]);
+        return Inertia::render('Admin/Role/Create', ['roles' => $roles, 'permissions' => $permissions]);
     }
 
     /**
@@ -39,14 +39,17 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $request->validate(
-            ['name' => 'required', 'permission_ids']
+            [
+                'name' => 'required|unique:'.Role::class,
+                'permissionIds'
+            ]
         );
         $createdRole = Role::create(['name' => $request->name]);
-        $permissions = array_map('intval', $request->permission_ids);
+        $permissions = array_map('intval', $request->permissionIds);
         $createdRole->syncPermissions($permissions);
 
         Session::flash('create');
-        return redirect()->route('role.index')->with('create',' Role  Successfully Created');
+        return redirect()->route('role.index')->with('create', ' Role  Successfully Created');
     }
 
     /**

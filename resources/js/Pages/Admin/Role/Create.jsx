@@ -1,24 +1,28 @@
 import { Head, useForm } from '@inertiajs/react';
+import { Checkbox, CheckboxField, CheckboxGroup } from '@/components/checkbox'
+import { Field, Label } from '@/components/fieldset'
 import BreadcumComponent from '@/Components/Dashboard/BreadcumComponent';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InputLabel from '@/Components/Form/InputLabel';
 import Input from '@/Components/Form/Input';
 import SubmitButton from '@/Components/Form/SubmitButton';
 import ImageFile from '@/Components/Form/ImageFile';
-import { Field, Label } from '@/components/fieldset'
 import { Select } from '@/components/select'
 import { Textarea } from '@/components/textarea'
+import { useState } from 'react';
 
 export default function Create({ auth, roles, permissions }) {
     const { data, setData, setStatus, post, processing, errors, reset } = useForm({
         name: '',
+        permissionIds: []
     });
-
+    let [selected, setSelected] = useState([])
     // console.log(permissions);
 
     function submit(e) {
         e.preventDefault()
         post(route('role.store'));
+        console.log(data);
     }
 
     return (
@@ -42,29 +46,40 @@ export default function Create({ auth, roles, permissions }) {
                                         <Label>Role Name</Label>
                                         <Input type="text" name="name" onChange={(e) => setData('name', e.target.value)} />
                                     </Field>
-                                    <SubmitButton />
+                                    <p className="text-red-500 font-bold text-xs">{errors.name}</p>
+                                </div>
+                                <div className="col-span-12">
+                                    <CheckboxGroup role="group" aria-label="Discoverability">
+                                        {/* <CheckboxField>
+                                            <Checkbox
+                                                checked={selected.length > 0}
+                                                indeterminate={selected.length !== options.length}
+                                                onChange={(checked) => setSelected(checked ? options : [])}
 
-                                    {
-                                        permissions.map((item, index) =>  (
-                                            // console.log(item)
-                                            <div className="col-span-4">
-                                                <div className="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-700 dark:shadow-slate-700/[.7]">
-                                                    <div className="px-4 md:px-5 py-5">
-                                                        <div>
-                                                            <h3 className="text-lg font-normal text-gray-800 capitalize dark:text-gray-200">
-                                                                {index}
-                                                            </h3>
-                                                        </div>
-                                                        <div className="space-y-2 py-2">
-{item.name}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))
-                                    }
+                                            />
+                                            <Label>Select all</Label>
+                                        </CheckboxField> */}
+
+                                        {permissions.map((option, index) => (
+                                            <CheckboxField key={index}>
+                                                <Checkbox
+                                                    name={index}
+                                                    checked={data.permissionIds.includes(option.id)}
+                                                    value={option.id}
+                                                    onChange={(checked) => {
+                                                        setData('permissionIds',
+                                                            checked ? [...data.permissionIds, option.id] : data.permissionIds.filter((item) => item !== option.id)
+                                                        )
+                                                    }}
+                                                />
+                                                <Label>{option.name}</Label>
+                                            </CheckboxField>
+                                        ))}
+                                    </CheckboxGroup>
                                 </div>
                             </div>
+
+                            <SubmitButton />
                         </form>
                     </div>
                 </div>

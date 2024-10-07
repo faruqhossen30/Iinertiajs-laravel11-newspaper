@@ -46,12 +46,12 @@ class PermissionSeeder extends Seeder
             // ['name' => 'user update', 'module_name' => 'user'],
             // ['name' => 'user delete', 'module_name' => 'user'],
             // ['name' => 'user show',   'module_name' => 'user'],
-            // // category
-            // ['name' => 'category list',   'module_name' => 'category'],
-            // ['name' => 'category create', 'module_name' => 'category'],
-            // ['name' => 'category update', 'module_name' => 'category'],
-            // ['name' => 'category delete', 'module_name' => 'category'],
-            // ['name' => 'category show',   'module_name' => 'category'],
+            // category
+            ['name' => 'category list',   'module_name' => 'category'],
+            ['name' => 'category create', 'module_name' => 'category'],
+            ['name' => 'category update', 'module_name' => 'category'],
+            ['name' => 'category delete', 'module_name' => 'category'],
+            ['name' => 'category show',   'module_name' => 'category'],
 
             // // Blog
             // ['name' => 'blog list',   'module_name' => 'blog'],
